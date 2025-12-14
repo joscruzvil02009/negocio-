@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Negocio de Ropa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            margin:0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color:white;
+        }
+        header{
+            padding:30px;
+            text-align:center;
+            background: rgba(0,0,0,0.4);
+        }
+        header h1{font-size:3rem;margin:0;}
+        header p{font-size:1.2rem;color:#c7ffb2;}
+        section{padding:40px;}
+        .productos{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+            gap:30px;
+        }
+        .card{
+            background: rgba(255,255,255,0.1);
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+        .card:hover{transform: scale(1.05);}
+        .imagen{
+            height:200px;
+            border:3px dashed #00ff88;
+            border-radius:15px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#00ff88;
+            font-weight:bold;
+            margin-bottom:15px;
+            cursor:pointer;
+        }
+        .precio{font-size:1.3rem;color:#00ff88;margin:10px 0;}
+        .oferta{color:#ffeb3b;font-weight:bold;}
+        footer{
+            text-align:center;
+            padding:20px;
+            background: rgba(0,0,0,0.5);
+            font-size:0.9rem;
+        }
+        .btn{
+            display:inline-block;
+            padding:10px 20px;
+            border-radius:25px;
+            background:#00ff88;
+            color:black;
+            text-decoration:none;
+            font-weight:bold;
+            margin-top:10px;
+            cursor:pointer;
+        }
+        /* MODAL IMAGENES */
+        .modal{
+            display:none;
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.8);
+            justify-content:center;
+            align-items:center;
+            z-index:1000;
+        }
+        .modal-content{
+            background:#111;
+            padding:20px;
+            border-radius:20px;
+            max-width:500px;
+            width:90%;
+            text-align:center;
+            animation: zoom 0.4s ease;
+        }
+        @keyframes zoom{
+            from{transform:scale(0.6); opacity:0}
+            to{transform:scale(1); opacity:1}
+        }
+        .modal img{width:100%;border-radius:15px;margin-bottom:15px;}
+        .cerrar{color:#00ff88;font-size:1.5rem;cursor:pointer;float:right;}
+        .controles{display:flex;justify-content:space-between;margin-top:10px;}
+        .controles button{
+            background:#00ff88;border:none;padding:10px 20px;
+            border-radius:20px;font-weight:bold;cursor:pointer;
+        }
+        /* CARRITO */
+        .carrito{
+            position:fixed;top:0;right:-400px;width:350px;height:100%;
+            background:#111;box-shadow:-5px 0 20px rgba(0,0,0,0.6);
+            padding:20px;transition:0.4s;z-index:2000;
+        }
+        .carrito.activo{right:0;}
+        .carrito h2{color:#00ff88;}
+        .item{border-bottom:1px solid #333;padding:10px 0;}
+        .total{font-size:1.3rem;color:#00ff88;margin-top:20px;}
+        .btn-pagar{
+            background:#00ff88;border:none;width:100%;padding:15px;
+            border-radius:25px;font-weight:bold;margin-top:15px;cursor:pointer;
+        }
+        /* ICONO CARRITO */
+        .icono-carrito{
+            position:fixed;top:20px;right:20px;background:#00ff88;color:black;
+            width:60px;height:60px;border-radius:50%;display:flex;
+            align-items:center;justify-content:center;font-size:1.8rem;
+            cursor:pointer;box-shadow:0 10px 20px rgba(0,0,0,0.5);z-index:3000;
+        }
+        .contador{
+            position:absolute;top:-5px;right:-5px;background:red;color:white;
+            width:22px;height:22px;border-radius:50%;font-size:0.8rem;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .btn-eliminar{
+            background:red;border:none;color:white;padding:5px 10px;
+            border-radius:10px;cursor:pointer;float:right;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>SEDUCCION</h1>
+    <p>Moda urbana, moderna y con estilo</p>
+</header>
+<section>
+    <h2>Productos</h2>
+    <div class="productos">
+        <div class="card"><div class="imagen" onclick="abrirModal(0)">VER IMÁGENES</div><h3>Producto 1</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 1',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(1)">VER IMÁGENES</div><h3>Producto 2</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 2',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(2)">VER IMÁGENES</div><h3>Producto 3</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 3',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(3)">VER IMÁGENES</div><h3>Producto 4</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 4',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(4)">VER IMÁGENES</div><h3>Producto 5</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 5',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(5)">VER IMÁGENES</div><h3>Producto 6</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 6',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(6)">VER IMÁGENES</div><h3>Producto 7</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 7',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(7)">VER IMÁGENES</div><h3>Producto 8</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 8',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(8)">VER IMÁGENES</div><h3>Producto 9</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 9',0)">Comprar</a></div>
+        <div class="card"><div class="imagen" onclick="abrirModal(9)">VER IMÁGENES</div><h3>Producto 10</h3><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><p style="color:#00ff88;">✏️ AGREGA TEXTO AQUÍ</p><a class="btn" onclick="agregarCarrito('Producto 10',0)">Comprar</a></div>
+    </div>
+</section>
+<section>
+    <h2>Información del Negocio</h2>
+    <div class="card">
+        <p style="color:#00ff88">📍 Dirección: AGREGA TU UBICACIÓN</p>
+        <p style="color:#00ff88">📞 Teléfono / WhatsApp: AGREGA TU NÚMERO</p>
+        <p style="color:#00ff88">❌ X / Redes: TU USUARIO</p>
+    </div>
+</section>
+<footer>© 2025 Mi Negocio de Ropa</footer>
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="cerrar" onclick="cerrarModal()">✖</span>
+        <img id="modalImg" src="">
+        <div class="controles">
+            <button onclick="anterior()">◀</button>
+            <button onclick="siguiente()">▶</button>
+        </div>
+    </div>
+</div>
+<!-- CARRITO -->
+<div class="carrito" id="carrito">
+    <h2>🛒 Carrito</h2>
+    <div id="items"></div>
+    <p class="total">Total: $<span id="total">0</span> MXN</p>
+    <button class="btn-pagar" onclick="mostrarPago()">Continuar</button>
+</div>
+<div class="icono-carrito" onclick="toggleCarrito()">🛒<div class="contador" id="contador">0</div></div>
+<script>
+    const imagenes = [
+        ['ropa1a.jpg','ropa1b.jpg'],
+        ['ropa2a.jpg','ropa2b.jpg'],
+        ['ropa3a.jpg','ropa3b.jpg'],
+        ['ropa4a.jpg','ropa4b.jpg'],
+        ['ropa5a.jpg','ropa5b.jpg'],
+        ['ropa6a.jpg','ropa6b.jpg'],
+        ['ropa7a.jpg','ropa7b.jpg'],
+        ['ropa8a.jpg','ropa8b.jpg'],
+        ['ropa9a.jpg','ropa9b.jpg'],
+        ['ropa10a.jpg','ropa10b.jpg']
+    ];
+    let prod=0,img=0;
+    function abrirModal(p){prod=p;img=0;modal.style.display='flex';modalImg.src=imagenes[prod][img];}
+    function cerrarModal(){modal.style.display='none';}
+    function siguiente(){img=(img+1)%imagenes[prod].length;modalImg.src=imagenes[prod][img];}
+    function anterior(){img=(img-1+imagenes[prod].length)%imagenes[prod].length;modalImg.src=imagenes[prod][img];}
+    let carrito=[],total=0;
+    function agregarCarrito(nombre,precio){carrito.push({nombre,precio});total+=precio;actualizarCarrito();carritoDiv.classList.add('activo');}
+    function eliminarProducto(i){total-=carrito[i].precio;carrito.splice(i,1);actualizarCarrito();}
+    function actualizarCarrito(){items.innerHTML='';carrito.forEach((p,i)=>{items.innerHTML+=`<div class='item'>${p.nombre} - $${p.precio}<button class='btn-eliminar' onclick='eliminarProducto(${i})'>✖</button></div>`});totalSpan.innerText=total;contador.innerText=carrito.length;}
+    function toggleCarrito(){carritoDiv.classList.toggle('activo');}
+    function mostrarPago(){alert('📍 Visítanos en tu tienda física\n📞 Contacto por WhatsApp');}
+    const modal=document.getElementById('modal'),modalImg=document.getElementById('modalImg');
+    const items=document.getElementById('items'),totalSpan=document.getElementById('total');
+    const contador=document.getElementById('contador'),carritoDiv=document.getElementById('carrito');
+</script>
+</body>
+</html>
